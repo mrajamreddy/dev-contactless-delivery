@@ -1,0 +1,25 @@
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.link-stroke-dasharray {
+  stroke-dasharray: 5, 5;
+}
+
+.link-hover {
+    stroke: black;
+    stroke-width: 2px
+}
+
