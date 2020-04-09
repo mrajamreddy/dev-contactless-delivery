@@ -1,0 +1,53 @@
+{
+    "children": [
+        {
+            "name": "BLUE_NETWORK",
+            "level": 3,
+            "image": {
+                "normalImage": "bluenetwork_normal.svg",
+                "hoverImage": "bluenetwork_hover.svg",
+                "imageWidth": 200,
+                "imageHeight": 80
+            }
+        },
+        {
+            "name": "RED_NETWORK",
+            "level": 3,
+            "image": {
+                "normalImage": "rednetwork_normal.svg",
+                "hoverImage": "rednetwork_hover.svg",
+                "imageWidth": 200,
+                "imageHeight": 80
+            }
+        },
+        {
+            "name": "YELLOW_NETWORK",
+            "level": 3,
+            "image": {
+                "normalImage": "yellownetwork_normal.svg",
+                "hoverImage": "yellownetwork_hover.svg",
+                "imageWidth": 200,
+                "imageHeight": 80
+            }
+        }
+    ],
+    "name": "MOD",
+    "level": 3,
+    "image": {
+        "selectedImage": "mod_tap.svg",
+        "normalImage": "mod_normal.svg",
+        "hoverImage": "mod_hover.svg",
+        "imageWidth": 125,
+        "imageHeight": 125
+    },
+    "svg": {
+        "svgWidth": 600,
+        "svgHeight": 720,
+        "margin": {
+            "top": 20,
+            "right": 90,
+            "bottom": 30,
+            "left": 200
+        }
+    }
+}

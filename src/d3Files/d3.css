@@ -1,3 +1,8 @@
+svg {
+  display: block;
+  margin: auto;
+}
+
 .node circle {
   fill: #fff;
   stroke: steelblue;
@@ -15,7 +20,7 @@
 }
 
 .link-stroke-dasharray {
-  stroke-dasharray: 5, 5;
+  stroke-dasharray: 3, 3;
 }
 
 .link-hover {

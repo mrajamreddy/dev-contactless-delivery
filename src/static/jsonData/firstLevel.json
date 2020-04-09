@@ -1,3 +1,20 @@
 {
-    "name": "projects_normal"
+    "name": "PROJECTS",
+    "level": 0,
+    "image": {
+        "normalImage": "projects_normal.svg",
+        "hoverImage": "projects_hover.svg",
+        "imageWidth": 150,
+        "imageHeight": 150
+    },
+    "svg": {
+        "svgWidth": 400,
+        "svgHeight": 720,
+        "margin": {
+            "top": 20,
+            "right": 90,
+            "bottom": 230,
+            "left": 200
+        }
+    }
 }

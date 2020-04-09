@@ -18,6 +18,7 @@ export default class HorozontalTree {
         this._fixedDepth = 200;
         this._rectW = 300; /* Width of the rectangle */
         this._rectH = 8; /* Height of the rectangle */
+        this.nodeClick = null;
     }
 
     // Creates a curved (diagonal) path from parent to the child nodes
@@ -27,10 +28,10 @@ export default class HorozontalTree {
         //   ${(s.y + d.y) / 2} ${d.x},
         //   ${d.y} ${d.x}`
 
-        const path = `M ${s.y} ${s.x + 15}
-            C ${(s.y + d.y) / 2} ${s.x},
+        const path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 5} ${s.x},
               ${(s.y + d.y) / 2} ${d.x},
-              ${d.y + 200} ${d.x + 15}`
+              ${d.y} ${d.x}`
 
         return path
     }
@@ -66,7 +67,7 @@ export default class HorozontalTree {
             links = treeData.descendants(nodes).slice(1);
 
         // Normalize for fixed-depth.
-        nodes.forEach(function (d) { d.y = d.depth * 600 });
+        nodes.forEach(function (d) { d.y = d.depth * 200 });
 
         // ****************** Nodes section ***************************
 
@@ -78,33 +79,54 @@ export default class HorozontalTree {
         var nodeEnter = node.enter().append('g')
             .attr('class', 'node')
             .attr("transform", function (d) {
-                console.log('data', d);
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
-            .on('click', () => { console.log('clicked') });
+            .on('click', (d) => { 
+                if (!d.children) {
+                    return this.nodeClick(d);
+                }
+             });
 
         // Add Circle for the nodes
-        // nodeEnter.append('rect')
-        //     .attr('class', 'nodeRect')
-        //     .attr('width', "200px")
-        //     .attr('height', "30px");
-
+        //Add SVG to the node
         nodeEnter.append("image")
-        .attr('class', 'nodeRect')
-        .attr("xlink:href","https://upload.wikimedia.org/wikipedia/commons/d/d8/Compass_card_(de).svg")
-        .attr("width", 100)
-        .attr("height", 100)
+            .attr('class', 'node')
+            .attr("x", function (d) {
+                return d.children || d._children ? -(d.data.image.imageWidth) : 0;
+            })
+            .attr('y', function (d) {
+                return d.children || d._children ? -(d.data.image.imageHeight * 1.25) : 0;
+                // return -(d.data.image.imageHeight / 2);
+            })
+            .attr("href", d => {
+                return d.children || d._children ? require("../static/images/flowchart/" + d.data.image.selectedImage) : require("../static/images/flowchart/" + d.data.image.normalImage);
+            })
+            .attr("width", d => d.data.image.imageWidth)
+            .attr("height", d => d.data.image.imageHeight)
+            .on('mouseover', function (d) {
+                if (!(d.children || d._children)) {
+                    d3.select(this).attr("href", require("../static/images/flowchart/" + d.data.image.hoverImage));
+                }
+            })
+            .on('mouseout', function (d) {
+                if (!(d.children || d._children)) {
+                    d3.select(this).attr("href", require("../static/images/flowchart/" + d.data.image.normalImage));
+                }
+            })
 
         // Add labels for the nodes
-        // nodeEnter.append('text')
-        //     .attr("dy", ".35em")
-        //     .attr("x", function (d) {
-        //         return d.children || d._children ? -40 : 40;
-        //     })
-        //     .attr("text-anchor", function (d) {
-        //         return d.children || d._children ? "end" : "start";
-        //     })
-        //     .text(function (d) { return d.data.name; });
+        nodeEnter.append('text')
+            .attr("text-anchor", function (d) {
+                return d.children || d._children ? "end" : "start";
+            })
+            .text(function (d) { 
+                if (d.children) {
+                    return d.data.name;
+                }
+             })
+             .attr('transform', d => {
+                 return "translate("+ -(d.data.image.imageWidth / 2.5) +","+ -(d.data.image.imageHeight / 8) +")";
+             });
 
         // UPDATE
         var nodeUpdate = nodeEnter.merge(node);
@@ -117,9 +139,9 @@ export default class HorozontalTree {
             });
 
         // Update the node attributes and style
-        nodeUpdate.select('rect.nodeRect')
-            .attr('width', "200px")
-            .attr('height', "30px")
+        nodeUpdate.select('image.node')
+            .attr("width", d => d.data.image.imageWidth)
+            .attr("height", d => d.data.image.imageHeight)
             .attr('cursor', 'pointer');
 
 
@@ -160,6 +182,8 @@ export default class HorozontalTree {
         var linkEnter = link.enter().insert('path', "g")
             .attr("class", "link link-stroke-dasharray")
             .attr('d', (d) => {
+                source.x = source.x - (d.data.image.imageHeight * 0.4);
+                source.x0 = source.x0 - (d.data.image.imageHeight * 0.4);
                 var o = { x: source.x0, y: source.y0 }
                 return this.diagonal(o, o)
             });
@@ -170,7 +194,11 @@ export default class HorozontalTree {
         // Transition back to the parent element position
         linkUpdate.transition()
             .duration(this.duration)
-            .attr('d', (d) => { return this.diagonal(d, d.parent) });
+            .attr('d', (d) => {
+                d.x = d.x + (d.data.image.imageHeight / 2);
+                d.x0 = d.x0 + (d.data.image.imageHeight / 2);
+                return this.diagonal(d, d.parent)
+            });
 
         // Remove any exiting links
         var linkExit = link.exit().transition()
@@ -194,34 +222,27 @@ export default class HorozontalTree {
         this.svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
     }
 
-    initHorizontalTree = (options) => {
+    initVerticalTree = (options) => {
         var treeData = options.data;
 
+        this.nodeClick = options.selectNodeFunc;
         this.root = d3.hierarchy(treeData, function (d) { return d.children; });
 
         // Set the dimensions and margins of the diagram
-        var margin = { top: 20, right: 90, bottom: 30, left: 200 },
-            width = options.width - margin.left - margin.right,
-            height = options.height - margin.top - margin.bottom;
+        var margin = treeData.svg.margin,
+            width = treeData.svg.svgWidth - margin.left - margin.right,
+            height = treeData.svg.svgHeight - margin.top - margin.bottom;
 
-        const childernNodeWidth = parseInt((this.root.children.length * this._rectW) / 2);
-        const zoom = d3.zoom()
-            .scaleExtent([0.25, 1])
-            .on("zoom", this.redraw);
-        // const zoom = d3.zoomTransform().scale([0.25, 1]).translate([parseInt(childernNodeWidth + ((width - childernNodeWidth * 2) / 2) - this._margin.left / 2), 20]).on("zoom", this.redraw);
-
-        console.log('d3.select(options.id)', d3.select(options.id));
-        console.log('d3.select(options.id)', d3.select("#root"));
         // append the svg object to the body of the page
         // appends a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
+        d3.select("svg").remove();
         this.svg = d3.select(options.id).append("svg")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate("
-                + margin.left + "," + margin.top + ")")
-            .call(zoom);
+                + margin.left + "," + margin.top + ")");
 
         // declares a tree layout and assigns the size
         this.treemap = d3.tree().size([height, width]);

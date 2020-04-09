@@ -1,0 +1,43 @@
+{
+    "children": [
+        {
+            "name": "MOD",
+            "level": 2,
+            "image": {
+                "normalImage": "mod_normal.svg",
+                "hoverImage": "mod_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        },
+        {
+            "name": "MIGRATE",
+            "level": 2,
+            "image": {
+                "normalImage": "migrate_normal.svg",
+                "hoverImage": "migrate_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        }
+    ],
+    "name": "MOVE",
+    "level": 2,
+    "image": {
+        "selectedImage": "move_tap.svg",
+        "normalImage": "move_normal.svg",
+        "hoverImage": "move_hover.svg",
+        "imageWidth": 125,
+        "imageHeight": 125
+    },
+    "svg": {
+        "svgWidth": 1200,
+        "svgHeight": 720,
+        "margin": {
+            "top": 20,
+            "right": 90,
+            "bottom": 30,
+            "left": 200
+        }
+    }
+}

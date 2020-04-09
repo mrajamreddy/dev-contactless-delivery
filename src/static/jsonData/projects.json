@@ -1,0 +1,63 @@
+{
+    "children": [
+        {
+            "name": "ADVISE",
+            "level": 1,
+            "image": {
+                "normalImage": "advise_normal.svg",
+                "hoverImage": "advise_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        },
+        {
+            "name": "BUILD",
+            "level": 1,
+            "image": {
+                "normalImage": "build_normal.svg",
+                "hoverImage": "build_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        },
+        {
+            "name": "MOVE",
+            "level": 1,
+            "image": {
+                "normalImage": "move_normal.svg",
+                "hoverImage": "move_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        },
+        {
+            "name": "MANAGE",
+            "level": 1,
+            "image": {
+                "normalImage": "manage_normal.svg",
+                "hoverImage": "manage_hover.svg",
+                "imageWidth": 125,
+                "imageHeight": 125
+            }
+        }
+    ],
+    "name": "PROJECTS",
+    "level": 1,
+    "image": {
+        "selectedImage": "projects_tap.svg",
+        "normalImage": "projects_normal.svg",
+        "hoverImage": "projects_hover.svg",
+        "imageWidth": 125,
+        "imageHeight": 125
+    },
+    "svg": {
+        "svgWidth": 1200,
+        "svgHeight": 720,
+        "margin": {
+            "top": 20,
+            "right": 90,
+            "bottom": 30,
+            "left": 200
+        }
+    }
+}

@@ -1,7 +1,6 @@
 // import * as d3 from "d3";
 import * as d3 from "d3";
 import './d3.css';
-import projects_normal from '../static/images/flowchart/projects_normal.svg';
 
 export default class HorozontalTree {
 
@@ -19,19 +18,20 @@ export default class HorozontalTree {
         this._fixedDepth = 200;
         this._rectW = 300; /* Width of the rectangle */
         this._rectH = 8; /* Height of the rectangle */
+        this.loadNextLevel = null;
     }
 
     // Creates a curved (diagonal) path from parent to the child nodes
     diagonal = (s, d) => {
-        const path = `M ${s.y} ${s.x}
-        C ${s.y * 1.11} ${d.x * 1.11},
-          ${(s.y + d.y) / 2} ${d.x},
-          ${d.y} ${d.x}`
-
         // const path = `M ${s.y} ${s.x}
-        //     C ${(s.y + d.y) / 2} ${s.x},
-        //       ${(s.y + d.y) / 2} ${d.x},
-        //       ${d.y} ${d.x}`
+        // C ${s.y * 1.11} ${d.x * 1.11},
+        //   ${(s.y + d.y) / 2} ${d.x},
+        //   ${d.y} ${d.x}`
+
+        const path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 3} ${s.x},
+              ${(s.y * 1.25)} ${d.x},
+              ${d.y} ${d.x}`
 
         return path
     }
@@ -58,14 +58,11 @@ export default class HorozontalTree {
     }
 
     update = (source, height) => {
-        d3.curveCardinal()
-        let i = 0,
-            child_count_1 = 0,
+        let child_count_1 = 0,
             row_count = 1,
             expanded_child_row_count = 0,
             child_row_flag = false,
-            left_col_flag = false,
-            right_col_flag = false;
+            left_col_flag = false;
 
         // Assigns the x and y position for the nodes
         var treeData = this.treemap(this.root);
@@ -75,7 +72,6 @@ export default class HorozontalTree {
             links = treeData.descendants(nodes).slice(1);
 
         // Normalize for fixed-depth.
-        // nodes.forEach(function (d) { d.y = d.depth * 180 });
         nodes.forEach(d => {
             // Apply these rules only to first level of reportees
             if (d.depth == 1) {
@@ -89,7 +85,8 @@ export default class HorozontalTree {
                 // If the manager only has 1 reportee, place the node directly below the manager
                 // If not, offset it to the left
                 if (d.parent.children.length > 1) {
-                    d.x = -(this._rectW / 1.75) + (height / 2);
+                    d.x = -(this._rectW / 1.95) + (height / 2) - d.data.image.imageHeight;
+                    d.placement = 'top';
                 }
 
                 if (child_count_1 === 1 || child_count_1 % 3 === 0) {
@@ -101,14 +98,13 @@ export default class HorozontalTree {
                 if (child_count_1 % 2 === 0) {
                     //alert('setting right col flag')
                     left_col_flag = false;
-                    // right_col_flag = true;
-                    d.x = this._rectW / 1.75 + (height / 2);
+                    d.x = this._rectW / 1.95 + (height / 2);
+                    d.placement = 'bottom';
                 }
 
                 // For every third child, create a new row and reset count of child nodes
                 if (child_count_1 % 3 === 0) {
                     left_col_flag = true;
-                    // right_col_flag = false;
 
                     child_count_1 = 1;
                     row_count += 1;
@@ -122,7 +118,7 @@ export default class HorozontalTree {
                 }
 
                 // Set the row of the node
-                d.y = d.depth * this._fixedDepth * row_count * 1.15;
+                d.y = d.depth * this._fixedDepth * row_count * 1.5;
             }
         });
 
@@ -138,36 +134,58 @@ export default class HorozontalTree {
             .attr("transform", function (d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
-            .on('click', () => { console.log('clicked') });
+            .on('click', (d) => { 
+                if (!d.children) {
+                    this.loadNextLevel(d);
+                }
+            });
 
-        // Add Circle for the nodes
-        // nodeEnter.append('circle')
-        //     .attr('class', 'node')
-        //     .attr('r', "40px")
-        //     .style("fill", function (d) {
-        //         return d._children ? "lightsteelblue" : "#fff";
-        //     });
-        
-
+        //Add SVG to the node
         nodeEnter.append("image")
-            .attr('class', 'nodeRect')
-            .attr("href", d =>  {
-                console.log('data', d.data.name); 
-                return 'static/images/flowchart/'+ d.data.name;
+            .attr('class', 'node')
+            .attr("x", function (d) {
+                return d.children || d._children ? -(d.data.image.imageWidth) : -(d.data.image.imageWidth / 2);
             })
-            .attr("width", 100)
-            .attr("height", 100)
+            .attr('y', function (d) {
+                return d.children || d._children ? -(d.data.image.imageHeight / 2) : 0;
+                // return -(d.data.image.imageHeight / 2);
+            })
+            .attr("href", d => {
+                return d.children || d._children ? require("../static/images/flowchart/" + d.data.image.selectedImage) : require("../static/images/flowchart/" + d.data.image.normalImage);
+            })
+            .attr("width", d => d.data.image.imageWidth)
+            .attr("height", d => d.data.image.imageHeight)
+            .on('mouseover', function (d) {
+                if (!(d.children || d._children)) {
+                    d3.select(this).attr("href", require("../static/images/flowchart/" + d.data.image.hoverImage));
+                }
+            })
+            .on('mouseout', function (d) {
+                if (!(d.children || d._children)) {
+                    d3.select(this).attr("href", require("../static/images/flowchart/" + d.data.image.normalImage));
+                }
+            })
 
         // Add labels for the nodes
-        // nodeEnter.append('text')
-        //     .attr("dy", ".35em")
-        //     .attr("x", function (d) {
-        //         return d.children || d._children ? -40 : 40;
-        //     })
-        //     .attr("text-anchor", function (d) {
-        //         return d.children || d._children ? "end" : "start";
-        //     })
-        //     .text(function (d) { return d.data.name; });
+        nodeEnter.append('text')
+            // .attr('dy', d => {
+            //     return d.children || d._children ? "11%" : "19%"
+            // })
+            // .attr('dx', "-2%")
+            .attr("text-anchor", function (d) {
+                return d.children || d._children ? "end" : "start";
+            })
+            .text(function (d) { return d.data.name; })
+            .attr('transform', d => {
+                if (d.data.level === 0) {
+                    return "translate("+ -(d.data.image.imageWidth * 0.2) +","+ (d.data.image.imageHeight * 1.15) +")";
+                } else {
+                    return d.children ? 
+                        "translate("+ -(d.data.image.imageWidth * 0.2) +","+ (d.data.image.imageHeight * .63) +")" : 
+                        "translate("+ -(d.data.image.imageWidth * 0.15) +","+ (d.data.image.imageHeight * 1.15) +")";
+                }
+            });
+
 
         // UPDATE
         var nodeUpdate = nodeEnter.merge(node);
@@ -180,18 +198,16 @@ export default class HorozontalTree {
             });
 
         // Update the node attributes and style
-        nodeUpdate.select('circle.node')
-            .attr('r', '50px')
-            .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
-            })
+        nodeUpdate.select('image.node')
+            .attr("width", d => d.data.image.imageWidth)
+            .attr("height", d => d.data.image.imageHeight)
             .attr('cursor', 'pointer');
 
 
         nodeUpdate.on('mouseover', (d) => {
             linkUpdate.attr('class', l => {
                 return d.data.name === l.data.name ? 'link link-hover' : 'link link-stroke-dasharray';
-            })
+            });
         })
 
         nodeUpdate.on('mouseout', (d) => {
@@ -235,7 +251,11 @@ export default class HorozontalTree {
         // Transition back to the parent element position
         linkUpdate.transition()
             .duration(this.duration)
-            .attr('d', (d) => { return this.diagonal(d, d.parent) });
+            .attr('d', (d) => {
+                d.x = d.x + (d.data.image.imageHeight / 2);
+                d.x0 = d.x0 + (d.data.image.imageHeight / 2);
+                return this.diagonal(d, d.parent)
+            });
 
         // Remove any exiting links
         var linkExit = link.exit().transition()
@@ -260,32 +280,31 @@ export default class HorozontalTree {
     }
 
     initHorizontalTree = (options) => {
-        var treeData = options.data;
+        let treeData = options.data;
 
+        this.loadNextLevel = options.selectNodeFunc;
         this.root = d3.hierarchy(treeData, function (d) { return d.children; });
 
         // Set the dimensions and margins of the diagram
-        var margin = { top: 20, right: 90, bottom: 30, left: 300 },
-            width = options.width - margin.left - margin.right,
-            height = options.height - margin.top - margin.bottom;
+        var margin = treeData.svg.margin,
+            width = treeData.svg.svgWidth - margin.left - margin.right,
+            height = treeData.svg.svgHeight - margin.top - margin.bottom;
 
-        const zoom = d3.zoom()
-            .scaleExtent([0.25, 1])
-            .on("zoom", this.redraw);
+        // const zoom = d3.zoom()
+        //     .scaleExtent([0.25, 1])
+        //     .on("zoom", this.redraw);
         // const zoom = d3.zoomTransform().scale([0.25, 1]).translate([parseInt(childernNodeWidth + ((width - childernNodeWidth * 2) / 2) - this._margin.left / 2), 20]).on("zoom", this.redraw);
 
-        console.log('d3.select(options.id)', d3.select(options.id));
-        console.log('d3.select(options.id)', d3.select("#root"));
         // append the svg object to the body of the page
         // appends a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
+        d3.select("svg").remove();
         this.svg = d3.select(options.id).append("svg")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate("
-                + margin.left + "," + margin.top + ")")
-            .call(zoom);
+                + margin.left + "," + margin.top + ")");
 
         // declares a tree layout and assigns the size
         this.treemap = d3.tree().size([height, width]);
@@ -293,9 +312,6 @@ export default class HorozontalTree {
         // Assigns parent, children, height, depth
         this.root.x0 = height / 2;
         this.root.y0 = 0;
-
-        // Collapse after the second level
-        // this.root.children.forEach(this.collapse());
 
         this.update(this.root, height);
     }

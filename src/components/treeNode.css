@@ -1,0 +1,21 @@
+#contactless-vertical {
+    width: 60%;
+    float: left;
+}
+
+.targetList {
+    width: 35%;
+    float: right;
+    margin: 10px 60px 10px 0;
+}
+
+.targetImage {
+    display: block;
+    float: right;
+    margin: 8px 0;
+}
+
+.targetHeader {
+    margin-bottom: 22px;
+    margin-left: 95px;
+}
