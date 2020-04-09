@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import HorinontalTree from '../d3Files/d3HorizontalTree';
 import FirstLevel from '../static/jsonData/firstLevel.json';
 
-class EmployeeOrgChart extends Component {
+class ContactlessDeliveryChart extends Component {
 
   componentDidMount() {
     this.HorinontalTree = new HorinontalTree();
@@ -35,4 +35,4 @@ class EmployeeOrgChart extends Component {
   }
 }
 
-export default EmployeeOrgChart;
+export default ContactlessDeliveryChart;
