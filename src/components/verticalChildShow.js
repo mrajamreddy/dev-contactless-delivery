@@ -37,6 +37,7 @@ class VerticalChild extends Component {
 
     nodeClick = node => {
         const list = require('../static/jsonData/' + node.data.name.toLowerCase());
+        this.updateBreadCrumb(node);
         const targetList = _.map(list, data => {
             return (
                 <Link
@@ -45,7 +46,7 @@ class VerticalChild extends Component {
                         pathname: "/targetDetails",
                         target: data // your data array of objects
                     }}
-                    onClick={(data) => this.updateBreadCrumb(data)}
+                    onClick={() => this.updateBreadCrumb(data)}
                 >
                     <img
                         className="targetImage"
@@ -80,10 +81,34 @@ class VerticalChild extends Component {
         })
     }
 
+    breadcrumbClick = node => {
+        console.log('in click', node);
+        const location = this.props.location.pathname,
+            val = node.data.name.toLowerCase(),
+            breadcrumb = [...this.props.breadCrumbData];
+
+        for (let i = breadcrumb.length; i > 0; i--) {
+            if (breadcrumb[i - 1].data.name === node.data.name) {
+                break;
+            }
+            breadcrumb.pop();
+        }
+        this.props.breadCrumbDetails(breadcrumb);
+
+        if (location.indexOf(node.data.page) > -1) {
+            this.renderHorizontalTree(require("../static/jsonData/" + val));
+        } else {
+            this.props.history.push({
+                pathname: '/' + node.data.page,
+                node: node
+            })
+        }
+    }
+
     render() {
         return (
             <HOC>
-                <BreadCrumbContent />
+                <BreadCrumbContent breadcrumbClick={this.breadcrumbClick} />
                 <div id="contactless-vertical"></div>
                 <div className="targetList">{this.state.targetList}</div>
             </HOC>

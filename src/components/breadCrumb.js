@@ -12,11 +12,16 @@ class breadcrumb extends Component {
             <ul className="breadcrumb">
                 {
                     _.map(this.props.breadCrumbData, (node, index) => {
+                        const name = node.name || node.data.name;
                         if (index === this.props.breadCrumbData.length - 1) {
-                            return (<li><span>asdsad + {node.data.name}</span></li>)
+                            return (<li key={name}><span>{name}</span></li>)
                         } else {
                             return (
-                                <li className="listItem" onClick={this.props.breadcrumbClick}><span>{node.data.name}</span></li>
+                                <li onClick={() => this.props.breadcrumbClick(node)} key={name} className="listItem">
+                                    <span>
+                                        {name}
+                                    </span>
+                                </li>
                             )
                         }
                     })

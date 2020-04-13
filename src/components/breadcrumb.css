@@ -17,9 +17,9 @@ ul.breadcrumb {
   ul.breadcrumb li+li:before {
     padding: 8px;
     color: black;
-    content: "/\00a0";
+    content: "\003e";
   }
-  ul.breadcrumb li.listItem:hover {
+  ul.breadcrumb li.listItem span:hover {
     color: #01447e;
     text-decoration: underline;
   }

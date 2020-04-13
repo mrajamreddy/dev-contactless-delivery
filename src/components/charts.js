@@ -14,8 +14,13 @@ class ContactlessDeliveryChart extends Component {
   }
 
   componentDidMount() {
+    let location = FirstLevel;
+    if (this.props.location.node) {
+      location = require("../static/jsonData/" + this.props.location.node.data.name.toLowerCase());
+    }
+    console.log(this.props.location.node)
     this.HorinontalTree = new HorinontalTree();
-    this.renderHorizontalTree(FirstLevel);
+    this.renderHorizontalTree(location);
   }
 
   nodeClick = node => {
@@ -48,10 +53,28 @@ class ContactlessDeliveryChart extends Component {
 
   }
 
+  breadcrumbClick = node => {
+    const location = this.props.location.pathname,
+      val = node.data.name.toLowerCase(),
+      breadcrumb = [...this.props.breadCrumbData];
+
+      for(let i = breadcrumb.length; i > 0; i--) {
+        if(breadcrumb[i-1].data.name === node.data.name) {
+          break;
+        }
+        breadcrumb.pop();
+      }
+      this.props.breadCrumbDetails(breadcrumb);
+
+    if (location.indexOf(node.data.page) > -1) {
+      this.renderHorizontalTree(require("../static/jsonData/" + val));
+    }
+  }
+
   render() {
     return (
       <HOC>
-        <BreadCrumbContent data={this.props.breadCrumbData}/>
+        <BreadCrumbContent breadcrumbClick={this.breadcrumbClick}/>
         <div id="orgchart-container"></div>
       </HOC>
     )
