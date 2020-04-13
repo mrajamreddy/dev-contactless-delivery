@@ -49,7 +49,6 @@ class ContactlessDeliveryChart extends Component {
   }
 
   render() {
-    console.log('breadCrumbData', this.props.breadCrumbData);
     return (
       <HOC>
         <BreadCrumbContent data={this.props.breadCrumbData}/>

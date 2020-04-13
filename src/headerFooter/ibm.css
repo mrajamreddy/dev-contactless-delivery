@@ -887,16 +887,6 @@ ol>li,ul>li {
     padding-left: 28px
 }
 
-ol>li::before,ul>li::before {
-    color: #959595;
-    content: '\2022';
-    display: inline-block;
-    font-family: Arial,sans-serif;
-    font-size: 1.5rem;
-    margin-left: -1.3rem;
-    position: absolute
-}
-
 ol li+li,ul li+li {
     padding-top: 7px
 }

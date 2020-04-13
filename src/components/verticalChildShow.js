@@ -7,6 +7,7 @@ import './treeNode.css'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { breadCrumbDetails } from '../redux/actions/breadCrumb';
+import BreadCrumbContent from './breadCrumb';
 
 class VerticalChild extends Component {
 
@@ -82,6 +83,7 @@ class VerticalChild extends Component {
     render() {
         return (
             <HOC>
+                <BreadCrumbContent />
                 <div id="contactless-vertical"></div>
                 <div className="targetList">{this.state.targetList}</div>
             </HOC>
