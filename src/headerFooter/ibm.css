@@ -420,10 +420,6 @@ a,abbr,acronym,address,applet,b,big,blockquote,body,center,cite,code,dd,del,dfn,
     background: no-scroll transparent
 }
 
-body,html {
-    background: #ececec
-}
-
 body {
     -webkit-overflow-scrolling: touch;
     direction: ltr

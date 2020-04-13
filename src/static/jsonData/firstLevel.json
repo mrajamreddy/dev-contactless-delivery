@@ -1,6 +1,7 @@
 {
     "name": "PROJECTS",
     "level": 0,
+    "page": "home",
     "image": {
         "normalImage": "projects_normal.svg",
         "hoverImage": "projects_hover.svg",

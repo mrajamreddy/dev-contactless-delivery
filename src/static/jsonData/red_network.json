@@ -1,15 +1,54 @@
-{
-    "infraAndFacilities": "infrastructure_&_facilities.svg",
-    "IBMInternalSupport": "ibm_internal_support.svg",
-    "platformAndTools": "platform_&_tool.svg",
-    "personalSupportToIBMFamily": "personal_support.svg",
-    "peopleCultureAndSkills": "people_culture_skills.svg",
-    "mobility": "mobility.svg",
-    "knowledgeManagement": "knowledge_management.svg",
-    "contract": "contract.svg",
-    "governance": "governance.svg",
-    "regulations_&_compliance": "regulations_&_compliance.svg",
-    "ways_of_working": "ways_of_working.svg",
-    "suppliers_&_partners": "suppliers_&_partners.svg",
-    "security_&_privacy": "security_&_privacy.svg"
-}
+[
+    {
+        "name":"infraAndFacilities",
+        "fileName":"infrastructure_&_facilities.svg"
+    },
+    {
+        "name":"IBMInternalSupport",
+        "fileName":"ibm_internal_support.svg"
+    },
+    {
+        "name":"platformAndTools",
+        "fileName":"platform_&_tool.svg"
+    },
+    {
+        "name":"personalSupportToIBMFamily",
+        "fileName":"personal_support.svg"
+    },
+    {
+        "name":"peopleCultureAndSkills",
+        "fileName":"people_culture_skills.svg"
+    },
+    {
+        "name":"mobility",
+        "fileName":"mobility.svg"
+    },
+    {
+        "name":"knowledgeManagement",
+        "fileName":"knowledge_management.svg"
+    },
+    {
+        "name":"contract",
+        "fileName":"contract.svg"
+    },
+    {
+        "name":"governance",
+        "fileName":"governance.svg"
+    },
+    {
+        "name":"regulations_&_compliance",
+        "fileName":"regulations_&_compliance.svg"
+    },
+    {
+        "name":"ways_of_working",
+        "fileName":"ways_of_working.svg"
+    },
+    {
+        "name":"suppliers_&_partners",
+        "fileName":"suppliers_&_partners.svg"
+    },
+    {
+        "name":"security_&_privacy",
+        "fileName":"security_&_privacy.svg"
+    }   
+]

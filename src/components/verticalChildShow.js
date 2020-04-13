@@ -1,36 +1,58 @@
 import React, { Component } from 'react';
 import VerticalTree from '../d3Files/d3VerticalAlignment';
-import MOD from '../static/jsonData/mod.json';
 import HOC from '../utils/hoc';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import './treeNode.css'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { breadCrumbDetails } from '../redux/actions/breadCrumb';
 
 class VerticalChild extends Component {
 
     state = {
-        list: {
-            "MOD": MOD,
-        },
-        targetList: ''
+        targetList: '',
+        breadCrumbData: []
     }
 
     componentDidMount() {
-        this.VerticalTree = new VerticalTree();
-        this.renderVerticalTree(this.state.list["MOD"]);
+        this.setState({ breadCrumbData: this.props.breadCrumbData });
+        const { node } = this.props.location;
+        if (node) {
+            const val = node.data.name.toLowerCase();
+            this.VerticalTree = new VerticalTree();
+            this.renderVerticalTree(require("../static/jsonData/" + val));
+        } else {
+            this.props.history.push('/home');
+        }
+
+    }
+
+    updateBreadCrumb = node => {
+        const breadCrumbData = [...this.state.breadCrumbData];
+        breadCrumbData.push(node);
+        this.props.breadCrumbDetails(breadCrumbData);
     }
 
     nodeClick = node => {
-        console.log('is this it??', node.data.name.toLowerCase());
         const list = require('../static/jsonData/' + node.data.name.toLowerCase());
         const targetList = _.map(list, data => {
             return (
-                <img 
-                    className="targetImage"
-                    src={require('../static/images/expand_grey/' + data)} 
-                    alt={data} 
-                    key={data}
-                    height="70px"
-                    width="440px"/>
+                <Link
+                    key={data.fileName}
+                    to={{
+                        pathname: "/targetDetails",
+                        target: data // your data array of objects
+                    }}
+                    onClick={(data) => this.updateBreadCrumb(data)}
+                >
+                    <img
+                        className="targetImage"
+                        src={require('../static/images/expand_grey/' + data.fileName)}
+                        alt={data.fileName}
+                        height="70px"
+                        width="440px" />
+                </Link>
             )
         });
         const targetHeader = (<h3 className="targetHeader">TARGET - CONTACTLESS DELIVERY</h3>);
@@ -58,7 +80,6 @@ class VerticalChild extends Component {
     }
 
     render() {
-        console.log('this.state.list.targetList', this.state.targetList);
         return (
             <HOC>
                 <div id="contactless-vertical"></div>
@@ -68,4 +89,16 @@ class VerticalChild extends Component {
     }
 }
 
-export default VerticalChild;
+const mapStateToProps = state => ({
+    breadCrumbData: state.BreadCrumb.breadcrumb
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            breadCrumbDetails,
+        },
+        dispatch,
+    );
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerticalChild);

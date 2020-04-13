@@ -3,6 +3,7 @@
         {
             "name": "MOD",
             "level": 2,
+            "page": "home",
             "image": {
                 "normalImage": "mod_normal.svg",
                 "hoverImage": "mod_hover.svg",
@@ -13,6 +14,7 @@
         {
             "name": "MIGRATE",
             "level": 2,
+            "page": "home",
             "image": {
                 "normalImage": "migrate_normal.svg",
                 "hoverImage": "migrate_hover.svg",
