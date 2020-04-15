@@ -4,6 +4,7 @@
             "name": "ADVISE",
             "level": 1,
             "page": "home",
+            "parent": "PROJECTS",
             "image": {
                 "normalImage": "advise_normal.svg",
                 "hoverImage": "advise_hover.svg",
@@ -15,6 +16,7 @@
             "name": "BUILD",
             "level": 1,
             "page": "home",
+            "parent": "PROJECTS",
             "image": {
                 "normalImage": "build_normal.svg",
                 "hoverImage": "build_hover.svg",
@@ -26,6 +28,7 @@
             "name": "MOVE",
             "level": 1,
             "page": "home",
+            "parent": "PROJECTS",
             "image": {
                 "normalImage": "move_normal.svg",
                 "hoverImage": "move_hover.svg",
@@ -37,6 +40,7 @@
             "name": "MANAGE",
             "level": 1,
             "page": "home",
+            "parent": "PROJECTS",
             "image": {
                 "normalImage": "manage_normal.svg",
                 "hoverImage": "manage_hover.svg",
@@ -46,7 +50,6 @@
         }
     ],
     "name": "PROJECTS",
-    "level": 1,
     "image": {
         "selectedImage": "projects_tap.svg",
         "normalImage": "projects_normal.svg",

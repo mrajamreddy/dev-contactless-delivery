@@ -12,17 +12,24 @@ import BreadCrumbContent from './breadCrumb';
 class VerticalChild extends Component {
 
     state = {
-        targetList: '',
-        breadCrumbData: []
+        targetList: ''
     }
 
     componentDidMount() {
         this.setState({ breadCrumbData: this.props.breadCrumbData });
         const { node } = this.props.location;
         if (node) {
-            const val = node.data.name.toLowerCase();
+            let val = node.data.name.toLowerCase();
+            const nodeLevel = node.data.level;
+            if(nodeLevel === 3) {
+                val = node.data.parent.toLowerCase();
+            }
             this.VerticalTree = new VerticalTree();
             this.renderVerticalTree(require("../static/jsonData/" + val));
+
+            if(nodeLevel === 3) {
+                this.nodeClick(node, false);
+            }
         } else {
             this.props.history.push('/home');
         }
@@ -30,14 +37,16 @@ class VerticalChild extends Component {
     }
 
     updateBreadCrumb = node => {
-        const breadCrumbData = [...this.state.breadCrumbData];
+        const breadCrumbData = [...this.props.breadCrumbData];
         breadCrumbData.push(node);
         this.props.breadCrumbDetails(breadCrumbData);
     }
 
-    nodeClick = node => {
+    nodeClick = (node, isClicked = true) => {
         const list = require('../static/jsonData/' + node.data.name.toLowerCase());
-        this.updateBreadCrumb(node);
+        if (isClicked){
+            this.updateBreadCrumb(node);
+        }
         const targetList = _.map(list, data => {
             return (
                 <Link
@@ -96,7 +105,8 @@ class VerticalChild extends Component {
         this.props.breadCrumbDetails(breadcrumb);
 
         if (location.indexOf(node.data.page) > -1) {
-            this.renderHorizontalTree(require("../static/jsonData/" + val));
+            this.setState({targetList: []});
+            // this.renderVerticalTree(require("../static/jsonData/" + val));
         } else {
             this.props.history.push({
                 pathname: '/' + node.data.page,

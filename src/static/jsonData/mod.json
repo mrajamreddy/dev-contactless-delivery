@@ -1,9 +1,10 @@
 {
     "children": [
         {
-            "name": "BLUE_NETWORK",
+            "name": "BLUE NETWORK",
             "level": 3,
             "page": "contactlessTarget",
+            "parent": "MOD",
             "image": {
                 "normalImage": "bluenetwork_normal.svg",
                 "hoverImage": "bluenetwork_hover.svg",
@@ -12,9 +13,10 @@
             }
         },
         {
-            "name": "RED_NETWORK",
+            "name": "RED NETWORK",
             "level": 3,
             "page": "contactlessTarget",
+            "parent": "MOD",
             "image": {
                 "normalImage": "rednetwork_normal.svg",
                 "hoverImage": "rednetwork_hover.svg",
@@ -23,9 +25,10 @@
             }
         },
         {
-            "name": "YELLOW_NETWORK",
+            "name": "YELLOW NETWORK",
             "level": 3,
             "page": "contactlessTarget",
+            "parent": "MOD",
             "image": {
                 "normalImage": "yellownetwork_normal.svg",
                 "hoverImage": "yellownetwork_hover.svg",
@@ -35,7 +38,6 @@
         }
     ],
     "name": "MOD",
-    "level": 3,
     "image": {
         "selectedImage": "mod_tap.svg",
         "normalImage": "mod_normal.svg",

@@ -9,10 +9,6 @@ import HOC from '../utils/hoc';
 
 class ContactlessDeliveryChart extends Component {
 
-  state = {
-    breadcrumb: [],
-  }
-
   componentDidMount() {
     let location = FirstLevel;
     if (this.props.location.node) {
@@ -25,12 +21,11 @@ class ContactlessDeliveryChart extends Component {
 
   nodeClick = node => {
     const val = node.data.name.toLowerCase(),
-      breadcrumb = [...this.state.breadcrumb];
+      breadcrumb = this.props.breadCrumbData ? [...this.props.breadCrumbData] : [];
     breadcrumb.push(node);
     this.props.breadCrumbDetails(breadcrumb);
 
     if (node.data.level < 2) {
-      this.setState({ breadcrumb });
       this.renderHorizontalTree(require("../static/jsonData/" + val));
     } else if (node.data.level === 2) {
       this.props.history.push({
@@ -59,11 +54,13 @@ class ContactlessDeliveryChart extends Component {
       breadcrumb = [...this.props.breadCrumbData];
 
       for(let i = breadcrumb.length; i > 0; i--) {
+        console.log('in chart', breadcrumb[i-1].data.name, node.data.name);
         if(breadcrumb[i-1].data.name === node.data.name) {
           break;
         }
         breadcrumb.pop();
       }
+      console.log('data', breadcrumb);
       this.props.breadCrumbDetails(breadcrumb);
 
     if (location.indexOf(node.data.page) > -1) {

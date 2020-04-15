@@ -33,6 +33,7 @@ class breadcrumb extends Component {
     }
 
     render() {
+        console.log('breadCrumbData', this.props.breadCrumbData);
         return (
             <HOC> {this.breadCrumb()}</HOC>
         )

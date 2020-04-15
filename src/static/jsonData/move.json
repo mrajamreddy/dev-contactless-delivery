@@ -1,9 +1,10 @@
-{ 
+{
     "children": [
         {
             "name": "MOD",
             "level": 2,
-            "page": "home",
+            "page": "contactlessTarget",
+            "parent": "MOVE",
             "image": {
                 "normalImage": "mod_normal.svg",
                 "hoverImage": "mod_hover.svg",
@@ -14,7 +15,8 @@
         {
             "name": "MIGRATE",
             "level": 2,
-            "page": "home",
+            "page": "contactlessTarget",
+            "parent": "MOVE",
             "image": {
                 "normalImage": "migrate_normal.svg",
                 "hoverImage": "migrate_hover.svg",
@@ -24,7 +26,6 @@
         }
     ],
     "name": "MOVE",
-    "level": 2,
     "image": {
         "selectedImage": "move_tap.svg",
         "normalImage": "move_normal.svg",
